@@ -1,0 +1,8 @@
+CRUD PHP
+
+CREATE DATABASE CRUD
+USE CRUD
+create table contatos (id INT AUTO_INCREMENT NOT NULL PRIMARY KEY, nome VARCHAR(30), email VARCHAR(30), celular  varchar(20));
+
+
+

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Formulário Completo em HTML</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <h1>Formulário de Matrícula Escolar</h1>
+
+
+    <!-- Criar Formulário-->
+     <!-- action => para onde os dados vão-->
+      <!--method => como os dados vão ser enviados-->
+     <form action="/registro" method="POST">
+
+    <!-- inputs = entradas-->
+     <label for="nome">Nome:</label>
+     <input type="text" name="nome" placeholder="Digite seu nome completo" required />
+
+      <label for="email">E-mail:</label>
+     <input type="email" name="email" placeholder="Digite seu e-mail"  />
+
+     <label for="telefone">Telefone:</label>
+     <input type="tel" name="telefone" placeholder="Digite seu telefone" required />
+
+     <label for="cpf">CPF:</label>
+     <input type="text" name="cpf" placeholder="Digite seu CPF" required />
+
+      <label for="senha">Senha:</label>
+     <input type="password" name="senha" placeholder="Digite sua senha" required />
+
+     <!-- TIPOS HTMLS-->
+        <label for="dataNascimento">Data de Nascimento:</label>
+        <input type="date" name="dataNascimento" required />
+
+        <label for="hora_contato">Hora do Contato:</label>
+        <input type="time" name="hora_contato" />
+
+     <!-- Texto mais longo = textarea-->
+      <label for="mensagem">Por que você deseja se matricular nesta escola?</label>
+      <textarea name="mensagem" placeholder="Digite sua mensagem" required></textarea>
+
+      <!-- Formas de selecao-->
+       <!-- Selecionar algo, quero exibir todas as opcoes, mas só pode selecionar 1 -->
+        <h2> Preferências </h2>
+        <p> Gênero:</p>
+
+        <label for="Masculino">Masculino</label>
+        <input type="radio" name="genero" value="masculino" /> Masculino
+
+      <label for="Feminino">Feminino</label>
+        <input type="radio" name="genero" value="feminino" /> Feminino
+    
+        <label for="Outro">Outro</label>
+        <input type="radio" name="genero" value="outro" /> Outro
+      
+      
+      <!-- mas pode selecionar 1 ou +-->
+       <p> Interesses: </p>
+
+       <label for="Esportes">Esportes</label>
+       <input type="checkbox" name="interesses" value="esportes" /> Esportes
+      
+       <label for="Musica">Música</label>
+        <input type="checkbox" name="interesses" value="musica" /> Música
+      
+        <label for="Arte">Arte</label>
+        <input type="checkbox" name="interesses" value="arte" /> Arte
+
+        <label for="cor"> Selecione sua cor favorita:</label>
+        <input type="color" name="cor" />
+
+      <!-- quero esconder as opções, limitar 1-->
+       <label for="Estado">Estado:</label>
+       <select name="estado">
+        <option value="">Selecione um estado</option>
+        <option value="SP">São Paulo</option>
+        <option value="SC">Santa Catarina</option>
+        <option value="RJ">Rio de Janeiro</option>
+        <option value="BA">Bahia</option>
+        <option value="MG">Minas Gerais</option>
+        <option value="RS">Rio Grande do Sul</option>
+       </select>
+
+       <!--Envio de Arquivos-->
+
+       <h2> Documentos </h2>
+       <div>
+       <label for="comprovante">Comprovante Escolar:</label>
+       <input type="file" name="comprovante" accept=".pdf,.doc,.docx" />
+       </div>
+
+       <div>
+       <label for="documentos">Documentos (RG, Comprovante de Residência, Bilhete Único):</label>
+       <input type="file" name="documentos" accept=".pdf,.doc,.docx" multiple />
+       </div>
+
+       <BR>
+     <!-- botão ação = submit-->
+         <!-- <input type="submit" value="Enviar" /> -->
+      <div>
+       
+     <button type="submit">Enviar</button>
+     <button type="reset">Limpar</button>
+     </div>
+
+
+     </form>
+  </body>
+</html>
