@@ -10,15 +10,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $id = (isset($_POST["id"]) && $_POST["id"] != null) ? $_POST["id"] : "";
     $nome = (isset($_POST["nome"]) && $_POST["nome"] != null) ? $_POST["nome"] : "";
     $email = (isset($_POST["email"]) && $_POST["email"] != null) ? $_POST["email"] : "";
-    $celular = (isset($_POST["celular"]) && $_POST["celular"] != null) ? $_POST["celular"] : NULL;
+$celular = (isset($_POST["celular"]) && $_POST["celular"] != null) ? $_POST["celular"] : "";
+ $idade = (isset($_POST["idade"]) && $_POST["idade"] != null) ? $_POST["idade"] : "";
 } else if (!isset($id)) {
-    // Se não se não foi setado nenhum valor para variável $id
-    $id = (isset($_GET["id"]) && $_GET["id"] != null) ? $_GET["id"] : "";
-    $nome = NULL;
-    $email = NULL;
+     // Se não foi setado nenhum valor para variável $id
+     $id = (isset($_GET["id"]) && $_GET["id"] != null) ? $_GET["id"] : "";
+     $nome = NULL;
+     $email = NULL;
     $celular = NULL;
-}
- 
+     $idade = NULL;
+  }
 // Cria a conexão com o banco de dados
 try {
     $conexao = new PDO("mysql:host=localhost;dbname=crud", "root", "");
@@ -31,16 +32,16 @@ try {
 // Bloco If que Salva os dados no Banco - atua como Create e Update
 if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "save" && $nome != "") {
     try {
-        if ($id != "") {
-            $stmt = $conexao->prepare("UPDATE contatos SET nome=?, email=?, celular=? WHERE id = ?");
-            $stmt->bindParam(4, $id);
-        } else {
-            $stmt = $conexao->prepare("INSERT INTO contatos (nome, email, celular) VALUES (?, ?, ?)");
-        }
-        $stmt->bindParam(1, $nome);
-        $stmt->bindParam(2, $email);
-        $stmt->bindParam(3, $celular);
- 
+ if ($id != "") {
+    $stmt = $conexao->prepare("UPDATE contatos SET nome=?, email=?, celular=?, idade=? WHERE id = ?");
+    $stmt->bindParam(5, $id);
+} else {
+    $stmt = $conexao->prepare("INSERT INTO contatos (nome, email, celular, idade) VALUES (?, ?, ?, ?)");
+}
+$stmt->bindParam(1, $nome);
+$stmt->bindParam(2, $email);
+$stmt->bindParam(3, $celular);
+$stmt->bindParam(4, $idade);
         if ($stmt->execute()) {
             if ($stmt->rowCount() > 0) {
                 echo "Dados cadastrados com sucesso!";
@@ -48,6 +49,7 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "save" && $nome != "") {
                 $nome = null;
                 $email = null;
                 $celular = null;
+                $idade = null;
             } else {
                 echo "Erro ao tentar efetivar cadastro";
             }
@@ -70,6 +72,7 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "upd" && $id != "") {
             $nome = $rs->nome;
             $email = $rs->email;
             $celular = $rs->celular;
+            $idade = $rs->idade;
         } else {
             throw new PDOException("Erro: Não foi possível executar a declaração sql");
         }
@@ -98,11 +101,12 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $id != "") {
     <html>
         <head>
             <meta charset="UTF-8">
-            <title>Agenda de contatos/ Vitor</title>
+            <title>Agenda de contatos</title>
         </head>
         <body>
             <center>
                 <table border="" width="1200px" >
+                   
 
 
             <form action="?act=save" method="POST" name="form1" >
@@ -132,6 +136,7 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $id != "") {
                }
                ?> />
                Celular:
+               
                <input type="text" name="celular" <?php
  
                // Preenche o celular no campo celular com um valor "value"
@@ -139,6 +144,14 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $id != "") {
                    echo "value=\"{$celular}\"";
                }
                ?> />
+               Idade
+               <input type="text" name="idade" <?php
+
+// Preenche a idade no campo idade com um valor "value"
+if (isset($idade) && $idade != null || $idade != "") {
+    echo "value=\"{$idade}\"";
+}
+?> />
                <input type="submit" value="salvar" />
                <input type="reset" value="Novo" />
                <hr>
@@ -148,26 +161,26 @@ if (isset($_REQUEST["act"]) && $_REQUEST["act"] == "del" && $id != "") {
                     <th>Nome</th>
                     <th>E-mail</th>
                     <th>Celular</th>
+                            <th>Idade</th>
                     <th>Ações</th>
                 </tr>
                 <?php
- 
-                // Bloco que realiza o papel do Read - recupera os dados e apresenta na tela
-                try {
-                    $stmt = $conexao->prepare("SELECT * FROM contatos");
-                    if ($stmt->execute()) {
-                        while ($rs = $stmt->fetch(PDO::FETCH_OBJ)) {
-                            echo "<tr>";
-                            echo "<td>".$rs->nome."</td><td>".$rs->email."</td><td>".$rs->celular
-                                       ."</td><td><center><a href=\"?act=upd&id=".$rs->id."\">[Alterar]</a>"
-                                       ."&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
-                                       ."<a href=\"?act=del&id=".$rs->id."\">[Excluir]</a></center></td>";
-                            echo "</tr>";
-                        }
-                    } else {
-                        echo "Erro: Não foi possível recuperar os dados do banco de dados";
-                    }
-                } catch (PDOException $erro) {
+// Bloco que realiza o papel do Read - recupera os dados e apresenta na tela
+try {
+    $stmt = $conexao->prepare("SELECT * FROM contatos");
+    if ($stmt->execute()) {
+        while ($rs = $stmt->fetch(PDO::FETCH_OBJ)) {
+            echo "<tr>";
+            echo "<td>".$rs->nome."</td><td>".$rs->email."</td><td>".$rs->celular."</td><td>".$rs->idade."</td><td><center><a href=\"?act=upd&id=".$rs->id."\">[Alterar]</a>"
+                ."&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+                ."<a href=\"?act=del&id=".$rs->id."\">[Excluir]</a></center></td>";
+            echo "</tr>";
+        }
+    } else {
+        echo "Erro: Não foi possível recuperar os dados do banco de dados";
+    }
+} catch (PDOException $erro) {
+    echo "Erro: ".$erro->getMessage();
                     echo "Erro: ".$erro->getMessage();
                 }
                 ?>
